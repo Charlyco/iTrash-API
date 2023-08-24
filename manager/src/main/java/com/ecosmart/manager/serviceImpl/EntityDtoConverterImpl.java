@@ -1,10 +1,7 @@
 package com.ecosmart.manager.serviceImpl;
 
 import com.ecosmart.manager.data.*;
-import com.ecosmart.manager.dto.AgentDto;
-import com.ecosmart.manager.dto.BinDto;
-import com.ecosmart.manager.dto.CustomerDto;
-import com.ecosmart.manager.dto.DisposalRequestDto;
+import com.ecosmart.manager.dto.*;
 import com.ecosmart.manager.repository.*;
 import com.ecosmart.manager.service.EntityDtoConverter;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -103,6 +100,32 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         agent.setCurrentLocation(agentDto.getCurrentLocation());
         agent.setRequestListHandled(disposalRequests);
         return agent;
+    }
+
+    @Override
+    public Admin convertDtoToAdmin(AdminDto adminDto) {
+        Admin admin = new Admin();
+        admin.setUserId(adminDto.getUserId());
+        admin.setUserName(adminDto.getUserName());
+        admin.setPassword(passwordEncoder.encode(adminDto.getPassword()));
+        admin.setAddress(adminDto.getAddress());
+        admin.setEmail(adminDto.getEmail());
+        admin.setRole(adminDto.getRole());
+        admin.setPhoneNumber(adminDto.getPhoneNumber());
+        return admin;
+    }
+
+    @Override
+    public AdminDto convertAdminToDto(Admin admin) {
+        AdminDto adminDto = new AdminDto();
+        adminDto.setUserId(admin.getUserId());
+        adminDto.setUserName(admin.getUsername());
+        adminDto.setPassword(passwordEncoder.encode(admin.getPassword()));
+        adminDto.setAddress(admin.getAddress());
+        adminDto.setEmail(admin.getEmail());
+        adminDto.setRole(admin.getRole());
+        adminDto.setPhoneNumber(admin.getPhoneNumber());
+        return adminDto;
     }
 
     @Override

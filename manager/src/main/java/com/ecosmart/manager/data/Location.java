@@ -1,3 +1,13 @@
 package com.ecosmart.manager.data;
 
-public record Location(Double latitude, Double longitude){}
+import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Embeddable
+public class Location{
+    Double latitude;
+    Double longitude;
+}

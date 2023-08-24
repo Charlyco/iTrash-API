@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UserService {
     CustomerDto loadCustomerDetails(String userName);
-    void updateCustomerDetails(Integer customerId, CustomerDto customerUpdate);
+    Boolean updateCustomerDetails(Integer customerId, CustomerDto customerUpdate);
     AgentDto loadAgentDetails(String userName);
-    void updateAgentDetails(Integer agentId, AgentDto agentUpdate);
-    void deleteCustomer(Integer customerId);
-    void deleteAgent(Integer agentId);
+    Boolean updateAgentDetails(Integer agentId, AgentDto agentUpdate);
+    Boolean deleteCustomer(Integer customerId);
+    Boolean deleteAgent(Integer agentId);
 
     Boolean findCustomerById(Integer customerId);
     Boolean findAgentById(Integer agentId);

@@ -12,12 +12,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@PrimaryKeyJoinColumn(name = "customerId")
-@DiscriminatorValue("CU")
 @Entity
+@PrimaryKeyJoinColumn(name="customerId")
+@DiscriminatorValue("CU")
 public class Customer extends User {
+    @OneToMany(mappedBy = "customer")
     private List<Bin> binList;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "customer")
     private List<DisposalRequest> requests;
 }

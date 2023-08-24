@@ -7,6 +7,7 @@ import com.ecosmart.manager.dto.CustomerDto;
 import com.ecosmart.manager.dto.DisposalRequestDto;
 import com.ecosmart.manager.repository.*;
 import com.ecosmart.manager.service.EntityDtoConverter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,18 +19,20 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
     private final BinRepository binRepository;
     private final CustomerRepository customerRepository;
     private final AgentRepository agentRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public EntityDtoConverterImpl(DisposalRequestRepository requestRepository, BinRepository binRepository, CustomerRepository customerRepository, AgentRepository agentRepository) {
+    public EntityDtoConverterImpl(DisposalRequestRepository requestRepository, BinRepository binRepository, CustomerRepository customerRepository, AgentRepository agentRepository, PasswordEncoder passwordEncoder) {
         this.requestRepository = requestRepository;
         this.binRepository = binRepository;
         this.customerRepository = customerRepository;
         this.agentRepository = agentRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public Customer convertDtoToCustomer(CustomerDto customerDto) {
-        List<Bin> binList = binRepository.findAllById(customerDto.getBinIds());
-        List<DisposalRequest> disposalRequests = requestRepository.findAllById(customerDto.getRequestIds());
+        //List<Bin> binList = binRepository.findAllById(customerDto.getBinIds());
+        //List<DisposalRequest> disposalRequests = requestRepository.findAllById(customerDto.getRequestIds());
         Integer userId = null;
         if (customerDto.getUserId() != null){
             userId = customerDto.getUserId();
@@ -37,13 +40,13 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         Customer customer = new Customer();
         customer.setUserId(userId);
         customer.setUserName(customerDto.getUserName());
-        customer.setPassword(customerDto.getPassword());
+        customer.setPassword(passwordEncoder.encode(customerDto.getPassword()));
         customer.setAddress(customerDto.getAddress());
         customer.setEmail(customerDto.getEmail());
         customer.setRole(customerDto.getRole());
         customer.setPhoneNumber(customerDto.getPhoneNumber());
-        customer.setBinList(binList);
-        customer.setRequests(disposalRequests);
+        //customer.setBinList(binList);
+        //customer.setRequests(disposalRequests);
 
         return customer;
     }
@@ -92,7 +95,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         Agent agent = new Agent();
         agent.setUserId(agentDto.getUserId());
         agent.setUserName(agentDto.getUserName());
-        agent.setPassword(agentDto.getPassword());
+        agent.setPassword(passwordEncoder.encode(agentDto.getPassword()));
         agent.setAddress(agentDto.getAddress());
         agent.setEmail(agentDto.getEmail());
         agent.setRole(agentDto.getRole());
@@ -142,7 +145,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         bin.setBinStatus(binDto.getBinStatus());
         bin.setOwnership(binDto.getOwnership());
         bin.setLocation(binDto.getLocation());
-        bin.setUserId(binDto.getUserId());
+        bin.setCustomer(customerRepository.findById(binDto.getUserId()).orElseThrow());
         return bin;
     }
 
@@ -154,7 +157,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         binDto.setBinStatus(bin.getBinStatus());
         binDto.setOwnership(bin.getOwnership());
         binDto.setLocation(bin.getLocation());
-        binDto.setUserId(bin.getUserId());
+        binDto.setUserId(bin.getCustomer().getUserId());
         return binDto;
     }
 }

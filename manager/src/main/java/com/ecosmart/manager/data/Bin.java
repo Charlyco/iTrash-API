@@ -17,8 +17,12 @@ public class Bin {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer binId;
     private Double binSize;
+    @Embedded
     private Location location;
-    private Integer userId;
+
+    @ManyToOne
+    private Customer customer;
+
     private BinOwnership ownership;
     @Enumerated(EnumType.STRING)
     private BinStatus binStatus;

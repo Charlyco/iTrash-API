@@ -12,23 +12,27 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Getter
+import static jakarta.persistence.InheritanceType.JOINED;
+
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
 @Entity
+@Inheritance(strategy=JOINED)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Integer userId;
     private String userName;
     private String password;
+    @Getter
     private String address;
+    @Getter
     private String email;
+    @Getter
     private String phoneNumber;
-    @OneToMany(mappedBy = "user")
-    private List<Token> tokens;
+    @Getter
     @Enumerated(EnumType.STRING)
     private Role role;
 

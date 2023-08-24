@@ -1,9 +1,6 @@
 package com.ecosmart.manager.data;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,13 +10,14 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@PrimaryKeyJoinColumn(name = "agentId")
+@Entity
+@PrimaryKeyJoinColumn(name="agentId")
 @DiscriminatorValue("AG")
 public class Agent extends User {
-    @OneToMany(mappedBy = "agent")
+    @OneToMany(mappedBy="agent")
     private List<DisposalRequest> requestListHandled;
+    @Embedded
     private Location currentLocation;
 }

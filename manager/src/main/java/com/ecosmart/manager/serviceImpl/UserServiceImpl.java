@@ -28,10 +28,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateCustomerDetails(Integer customerId, CustomerDto customerUpdate) {
+    public Boolean updateCustomerDetails(Integer customerId, CustomerDto customerUpdate) {
+        if (customerRepository.findById(customerId).isPresent()) {
             Customer customer = entityDtoConverter.convertDtoToCustomer(customerUpdate);
             customer.setUserId(customerId);
             customerRepository.save(customer);
+            return true;
+        }else return false;
     }
 
     @Override
@@ -40,20 +43,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateAgentDetails(Integer agentId, AgentDto agentUpdate) {
+    public Boolean updateAgentDetails(Integer agentId, AgentDto agentUpdate) {
+        if (agentRepository.findById(agentId).isPresent()) {
             Agent agent = entityDtoConverter.convertDtoToAgent(agentUpdate);
             agent.setUserId(agentId);
             agentRepository.save(agent);
+            return true;
+        }else return false;
     }
 
     @Override
-    public void deleteCustomer(Integer customerId) {
-        customerRepository.deleteById(customerId);
+    public Boolean deleteCustomer(Integer customerId) {
+        if (customerRepository.findById(customerId).isPresent()) {
+            customerRepository.deleteById(customerId);
+            return true;
+        }else return false;
     }
 
     @Override
-    public void deleteAgent(Integer agentId) {
+    public Boolean deleteAgent(Integer agentId) {
+        if (agentRepository.findById(agentId).isPresent()) {
             agentRepository.deleteById(agentId);
+            return true;
+        }else return false;
     }
 
     @Override

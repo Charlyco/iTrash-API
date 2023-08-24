@@ -1,5 +1,6 @@
 package com.ecosmart.manager.security;
 
+import com.ecosmart.manager.data.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -34,6 +35,10 @@ public class SecurityConfiguration {
                         authorize
                                 .requestMatchers("/api/v1/auth/**")
                                 .permitAll()
+                                .requestMatchers("/api/v1/disposal/notification/subscribe")
+                                .hasRole(Role.ADMIN.name())
+                                .requestMatchers("/api/v1/disposal/notification/unsubscribe")
+                                .hasRole(Role.ADMIN.name())
                                 .anyRequest()
                                 .authenticated())
                 .sessionManagement(policy -> policy.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

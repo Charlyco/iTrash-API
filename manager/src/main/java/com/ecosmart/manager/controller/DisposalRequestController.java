@@ -18,13 +18,13 @@ public interface DisposalRequestController {
     ResponseEntity<List<DisposalRequestDto>> getAllRequestHandledByAgent(@PathVariable Integer agentId );
 
     @GetMapping("/request/{requestId}")
-    ResponseEntity<String> getRequestStatus (@PathVariable Integer requestId);
+    ResponseEntity<String> getRequestStatus (@PathVariable("requestId") Integer requestId);
 
     @PutMapping("/update/{requestId}")
-    ResponseEntity<String> updateRequestStatus(@PathVariable Integer requestId, @RequestParam("status") RequestStatus status);
+    ResponseEntity<String> updateRequestStatus(@PathVariable("requestId") Integer requestId, @RequestParam("status") RequestStatus status);
 
     @PutMapping("/update/assign/{requestId}")
-    ResponseEntity<String> assignRequestToAgent(@PathVariable Integer requestId, @RequestParam("agentId") Integer agentId);
+    ResponseEntity<String> assignRequestToAgent(@PathVariable("requestId") Integer requestId, @RequestParam("agentId") Integer agentId);
 
     @PostMapping("/create")
     ResponseEntity<String> generateRequest(@RequestBody DisposalRequestDto requestDto) throws FirebaseMessagingException;

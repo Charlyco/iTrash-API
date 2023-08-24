@@ -8,21 +8,21 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/user")
 public interface UserController {
-    @GetMapping("/customer/{userName}")
-    ResponseEntity<CustomerDto> loadCustomerDetails(@PathVariable String userName);
+    @GetMapping("/get/customer/{userName}")
+    ResponseEntity<CustomerDto> loadCustomerDetails(@PathVariable("userName") String userName);
 
-    @GetMapping("/agent/{userName}")
-    ResponseEntity<AgentDto> loadAgentDetails(@PathVariable String userName);
+    @GetMapping("/get/agent/{userName}")
+    ResponseEntity<AgentDto> loadAgentDetails(@PathVariable("userName") String userName);
 
-    @PutMapping("/customer/update/{id}")
-    ResponseEntity<Void> updateCustomerDetails(@PathVariable Integer customerId, @RequestBody CustomerDto customerUpdate);
+    @PutMapping("/update/customer/{id}")
+    ResponseEntity<Void> updateCustomerDetails(@PathVariable("id") Integer customerId, @RequestBody CustomerDto customerUpdate);
 
-    @PutMapping("/agent/update/{id}")
-    ResponseEntity<Void> updateAgentDetails (@PathVariable Integer agentId, @RequestBody AgentDto agentDto);
+    @PutMapping("/update/agent/{id}")
+    ResponseEntity<Void> updateAgentDetails (@PathVariable("id") Integer agentId, @RequestBody AgentDto agentDto);
 
-    @DeleteMapping("/customer/{id}")
-    ResponseEntity<Void> deleteCustomer (@PathVariable Integer customerId);
+    @DeleteMapping("/delete/customer/{id}")
+    ResponseEntity<Void> deleteCustomer (@PathVariable("id") Integer customerId);
 
-    @DeleteMapping("/agent/{id}")
-    ResponseEntity<Void> deleteAgent (@PathVariable Integer agentId);
+    @DeleteMapping("/delete/agent/{id}")
+    ResponseEntity<Void> deleteAgent (@PathVariable("id") Integer agentId);
 }

@@ -13,6 +13,6 @@ public interface UserService {
     Boolean deleteCustomer(Integer customerId);
     Boolean deleteAgent(Integer agentId);
 
-    Boolean findCustomerById(Integer customerId);
-    Boolean findAgentById(Integer agentId);
+    CustomerDto findCustomerById(Integer customerId);
+    AgentDto findAgentById(Integer agentId);
 }

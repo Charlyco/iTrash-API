@@ -6,6 +6,7 @@ import com.ecosmart.manager.dto.AgentDto;
 import com.ecosmart.manager.dto.CustomerDto;
 import com.ecosmart.manager.repository.AgentRepository;
 import com.ecosmart.manager.repository.CustomerRepository;
+import com.ecosmart.manager.repository.UserRepository;
 import com.ecosmart.manager.service.EntityDtoConverter;
 import com.ecosmart.manager.service.UserService;
 import org.springframework.stereotype.Service;
@@ -14,17 +15,20 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final CustomerRepository customerRepository;
     private final AgentRepository agentRepository;
+    private final UserRepository userRepository;
     private final EntityDtoConverter entityDtoConverter;
 
-    public UserServiceImpl(CustomerRepository customerRepository, AgentRepository agentRepository, EntityDtoConverter entityDtoConverter) {
+    public UserServiceImpl(CustomerRepository customerRepository, AgentRepository agentRepository, UserRepository userRepository, EntityDtoConverter entityDtoConverter) {
         this.customerRepository = customerRepository;
         this.agentRepository = agentRepository;
+        this.userRepository = userRepository;
         this.entityDtoConverter = entityDtoConverter;
     }
 
     @Override
     public CustomerDto loadCustomerDetails(String userName) {
-        return entityDtoConverter.convertCustomerToDto(customerRepository.findCustomerByUserName(userName).orElseThrow());
+        Customer customer = customerRepository.findCustomerByUserName(userName).orElseThrow();
+        return entityDtoConverter.convertCustomerToDto(customer);
     }
 
     @Override
@@ -69,12 +73,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean findCustomerById(Integer customerId) {
-        return customerRepository.findById(customerId).isPresent();
+    public CustomerDto findCustomerById(Integer customerId) {
+        return entityDtoConverter.convertCustomerToDto(customerRepository.findById(customerId).orElseThrow());
     }
 
     @Override
-    public Boolean findAgentById(Integer agentId) {
-        return agentRepository.findById(agentId).isPresent();
+    public AgentDto findAgentById(Integer agentId) {
+        return entityDtoConverter.convertAgentToDto(agentRepository.findById(agentId).orElseThrow());
     }
 }

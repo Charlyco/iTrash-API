@@ -6,9 +6,10 @@ import com.ecosmart.manager.dto.DisposalRequestDto;
 import com.ecosmart.manager.service.DisposalRequestService;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
-
+@Controller
 public class DisposalRequestControllerImpl implements DisposalRequestController {
     private final DisposalRequestService requestService;
 

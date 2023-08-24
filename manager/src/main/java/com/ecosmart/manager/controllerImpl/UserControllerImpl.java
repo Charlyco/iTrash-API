@@ -5,7 +5,9 @@ import com.ecosmart.manager.dto.AgentDto;
 import com.ecosmart.manager.dto.CustomerDto;
 import com.ecosmart.manager.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 
+@Controller
 public class UserControllerImpl implements UserController {
     private final UserService userService;
 

@@ -17,22 +17,22 @@ public interface DisposalRequestController {
     @GetMapping("/{agentId}")
     ResponseEntity<List<DisposalRequestDto>> getAllRequestHandledByAgent(@PathVariable Integer agentId );
 
-    @GetMapping("/request/{requestId}")
+    @GetMapping("/{requestId}")
     ResponseEntity<String> getRequestStatus (@PathVariable("requestId") Integer requestId);
 
-    @PutMapping("/update/{requestId}")
+    @PutMapping("/{requestId}")
     ResponseEntity<String> updateRequestStatus(@PathVariable("requestId") Integer requestId, @RequestParam("status") RequestStatus status);
 
-    @PutMapping("/update/assign/{requestId}")
+    @PutMapping("/assign/{requestId}")
     ResponseEntity<String> assignRequestToAgent(@PathVariable("requestId") Integer requestId, @RequestParam("agentId") Integer agentId);
 
     @PostMapping("/create")
     ResponseEntity<String> generateRequest(@RequestBody DisposalRequestDto requestDto) throws FirebaseMessagingException;
 
-    @PutMapping("/notification/subscribe")
+    @PutMapping("/notify/subscribe")
     ResponseEntity<Integer> subscribeToTopic(@RequestParam List<String> tokens, @RequestParam String topic) throws FirebaseMessagingException;
 
-    @PutMapping("/notification/unsubscribe")
+    @PutMapping("/notify/unsubscribe")
     ResponseEntity<Integer> unsubscribeToTopic(@RequestParam List<String> tokens, @RequestParam String topic) throws FirebaseMessagingException;
 
 }

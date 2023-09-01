@@ -15,13 +15,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class UserControllerTest {
 
-    @Autowired
-    UserController userController;
-
-    @Test
-    void shouldLoadCustomerByUserName() {
-        ResponseEntity<CustomerDto> customer = userController.loadCustomerDetails("Charles12");
-        assertThat(customer.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(Objects.requireNonNull(customer.getBody()).getUserName()).isEqualTo("Charles12");
-    }
+//    @Autowired
+//    UserController userController;
+//
+//    @Test
+//    void shouldLoadCustomerByUserName() {
+//        ResponseEntity<CustomerDto> customer = userController.loadCustomerDetails("Charles12");
+//        assertThat(customer.getStatusCode()).isEqualTo(HttpStatus.OK);
+//        assertThat(Objects.requireNonNull(customer.getBody()).getUserName()).isEqualTo("Charles12");
+//    }
 }

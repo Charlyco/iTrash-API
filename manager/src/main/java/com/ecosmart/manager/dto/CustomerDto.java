@@ -10,6 +10,7 @@ import java.util.List;
 public class CustomerDto {
     private Integer userId;
     private String userName;
+    private String fullName;
     private String password;
     private String address;
     private String email;

@@ -25,6 +25,8 @@ public class User implements UserDetails {
     @Getter
     private Integer userId;
     private String userName;
+    @Getter
+    private String fullName;
     private String password;
     @Getter
     private String address;

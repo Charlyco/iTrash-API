@@ -37,13 +37,13 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         Customer customer = new Customer();
         customer.setUserId(userId);
         customer.setUserName(customerDto.getUserName());
+        customer.setFullName(customerDto.getFullName());
         customer.setPassword(passwordEncoder.encode(customerDto.getPassword()));
         customer.setAddress(customerDto.getAddress());
         customer.setEmail(customerDto.getEmail());
         customer.setRole(customerDto.getRole());
         customer.setPhoneNumber(customerDto.getPhoneNumber());
-        //customer.setBinList(binList);
-        //customer.setRequests(disposalRequests);
+
 
         return customer;
     }
@@ -58,6 +58,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         CustomerDto customerDto = new CustomerDto();
         customerDto.setUserId(customer.getUserId());
         customerDto.setUserName(customer.getUsername());
+        customerDto.setFullName(customer.getFullName());
         customerDto.setPassword(customer.getPassword());
         customerDto.setAddress(customer.getAddress());
         customerDto.setEmail(customer.getEmail());
@@ -76,6 +77,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         AgentDto agentDto = new AgentDto();
         agentDto.setUserId(agent.getUserId());
         agentDto.setUserName(agent.getUsername());
+        agentDto.setFullName(agent.getFullName());
         agentDto.setPassword(agent.getPassword());
         agentDto.setAddress(agent.getAddress());
         agentDto.setEmail(agent.getEmail());
@@ -92,6 +94,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         Agent agent = new Agent();
         agent.setUserId(agentDto.getUserId());
         agent.setUserName(agentDto.getUserName());
+        agent.setFullName(agentDto.getFullName());
         agent.setPassword(passwordEncoder.encode(agentDto.getPassword()));
         agent.setAddress(agentDto.getAddress());
         agent.setEmail(agentDto.getEmail());
@@ -107,6 +110,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         Admin admin = new Admin();
         admin.setUserId(adminDto.getUserId());
         admin.setUserName(adminDto.getUserName());
+        admin.setFullName(admin.getFullName());
         admin.setPassword(passwordEncoder.encode(adminDto.getPassword()));
         admin.setAddress(adminDto.getAddress());
         admin.setEmail(adminDto.getEmail());
@@ -120,12 +124,41 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         AdminDto adminDto = new AdminDto();
         adminDto.setUserId(admin.getUserId());
         adminDto.setUserName(admin.getUsername());
-        adminDto.setPassword(passwordEncoder.encode(admin.getPassword()));
+        adminDto.setFullName(admin.getFullName());
+        adminDto.setPassword(admin.getPassword());
         adminDto.setAddress(admin.getAddress());
         adminDto.setEmail(admin.getEmail());
         adminDto.setRole(admin.getRole());
         adminDto.setPhoneNumber(admin.getPhoneNumber());
         return adminDto;
+    }
+
+    @Override
+    public User convertDtoToUser(UserDto userDto) {
+        User user = new User();
+        user.setUserId(userDto.getUserId());
+        user.setUserName(userDto.getUserName());
+        user.setFullName(userDto.getFullName());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setAddress(userDto.getAddress());
+        user.setEmail(userDto.getEmail());
+        user.setRole(userDto.getRole());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        return user;
+    }
+
+    @Override
+    public UserDto convertUserToDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setUserId(user.getUserId());
+        userDto.setUserName(user.getUsername());
+        userDto.setFullName(user.getFullName());
+        userDto.setPassword(user.getPassword());
+        userDto.setAddress(userDto.getAddress());
+        userDto.setEmail(user.getEmail());
+        userDto.setRole(user.getRole());
+        userDto.setPhoneNumber(user.getPhoneNumber());
+        return userDto;
     }
 
     @Override
@@ -135,6 +168,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         requestDto.setRequestStatus(request.getRequestStatus());
         requestDto.setBinId(request.getBin().getBinId());
         requestDto.setCustomerId(request.getCustomer().getUserId());
+        requestDto.setRequestDate(request.getRequestDate());
         requestDto.setAgentId(request.getAgent().getUserId());
 
         return requestDto;
@@ -151,6 +185,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         request.setRequestStatus(requestDto.getRequestStatus());
         request.setBin(binRepository.findById(requestDto.getBinId()).orElseThrow());
         request.setCustomer(customerRepository.findById(requestDto.getCustomerId()).orElseThrow());
+        request.setRequestDate(requestDto.getRequestDate());
         request.setAgent(agentRepository.findById(requestDto.getAgentId()).orElseThrow());
 
         return request;
@@ -165,9 +200,10 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         Bin bin = new Bin();
         bin.setBinId(binId);
         bin.setBinSize(binDto.getBinSize());
+        bin.setLocation(binDto.getLocation());
+        bin.setDetailedAddress(binDto.getAddress());
         bin.setBinStatus(binDto.getBinStatus());
         bin.setOwnership(binDto.getOwnership());
-        bin.setLocation(binDto.getLocation());
         bin.setCustomer(customerRepository.findById(binDto.getUserId()).orElseThrow());
         return bin;
     }
@@ -177,9 +213,10 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         BinDto binDto = new BinDto();
         binDto.setBinId(bin.getBinId());
         binDto.setBinSize(bin.getBinSize());
+        binDto.setLocation(bin.getLocation());
+        binDto.setAddress(binDto.getAddress());
         binDto.setBinStatus(bin.getBinStatus());
         binDto.setOwnership(bin.getOwnership());
-        binDto.setLocation(bin.getLocation());
         binDto.setUserId(bin.getCustomer().getUserId());
         return binDto;
     }

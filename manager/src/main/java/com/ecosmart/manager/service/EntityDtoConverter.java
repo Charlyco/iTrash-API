@@ -12,6 +12,8 @@ public interface EntityDtoConverter {
     Agent convertDtoToAgent(AgentDto agentDto);
     Admin convertDtoToAdmin(AdminDto adminDto);
     AdminDto convertAdminToDto(Admin admin);
+    User convertDtoToUser(UserDto userDto);
+    UserDto convertUserToDto(User user);
     DisposalRequestDto convertRequestToDto(DisposalRequest request);
     DisposalRequest convertDtoToRequest(DisposalRequestDto requestDto);
     Bin convertDtoToBin(BinDto binDto);

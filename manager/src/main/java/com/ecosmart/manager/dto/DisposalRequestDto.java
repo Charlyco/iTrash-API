@@ -5,6 +5,8 @@ import com.ecosmart.manager.data.RequestStatus;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class DisposalRequestDto {
@@ -12,5 +14,6 @@ public class DisposalRequestDto {
     private RequestStatus requestStatus;
     private Integer binId;
     private Integer customerId;
+    private LocalDateTime requestDate;
     private Integer agentId;
 }

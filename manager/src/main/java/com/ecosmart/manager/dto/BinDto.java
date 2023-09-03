@@ -12,6 +12,7 @@ public class BinDto {
     private Integer binId;
     private Double binSize;
     private Location location;
+    private String address;
     private BinOwnership ownership;
     private BinStatus binStatus;
     private Integer userId;

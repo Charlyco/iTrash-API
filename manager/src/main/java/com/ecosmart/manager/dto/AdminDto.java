@@ -9,6 +9,7 @@ import lombok.Setter;
 public class AdminDto {
     private Integer userId;
     private String userName;
+    private String fullName;
     private String password;
     private String address;
     private String email;

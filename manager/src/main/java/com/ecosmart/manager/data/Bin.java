@@ -19,7 +19,7 @@ public class Bin {
     private Double binSize;
     @Embedded
     private Location location;
-
+    private String detailedAddress;
     @ManyToOne
     private Customer customer;
 

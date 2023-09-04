@@ -1,9 +1,6 @@
 package com.ecosmart.manager.serviceImpl;
 
-import com.ecosmart.manager.data.Admin;
-import com.ecosmart.manager.data.AuthResponse;
-import com.ecosmart.manager.data.Token;
-import com.ecosmart.manager.data.User;
+import com.ecosmart.manager.data.*;
 import com.ecosmart.manager.dto.AdminDto;
 import com.ecosmart.manager.dto.AgentDto;
 import com.ecosmart.manager.dto.CustomerDto;
@@ -43,39 +40,51 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthResponse createNewCustomer(CustomerDto customerDto) {
+    public AuthResponseCustomer createNewCustomer(CustomerDto customerDto) {
         List<CustomerDto> customers = new ArrayList<>();
         customerRepository.findAll().forEach(customer -> customers.add(entityDtoConverter.convertCustomerToDto(customer)));
         Stream<CustomerDto> customerDtoStream = customers.stream();
         if (customerDtoStream.noneMatch(s -> Objects.equals(s.getUserName(), customerDto.getUserName()))) {
-            User createdUser = customerRepository.save(entityDtoConverter.convertDtoToCustomer(customerDto));
-            var jwtToken = jwtService.generateToken(createdUser);
-            return saveTokenAndGetAuthResponse(createdUser, jwtToken);
-        }else return new AuthResponse();
+            Customer createdCustomer = customerRepository.save(entityDtoConverter.convertDtoToCustomer(customerDto));
+            var jwtToken = jwtService.generateToken(createdCustomer);
+            saveToken(createdCustomer, jwtToken);
+            AuthResponseCustomer authResponse = new AuthResponseCustomer();
+            authResponse.setCustomer(entityDtoConverter.convertCustomerToDto(createdCustomer));
+            authResponse.setToken(jwtToken);
+            return authResponse;
+        }else return new AuthResponseCustomer();
     }
 
     @Override
-    public AuthResponse createNewAgent(AgentDto agentDto) {
+    public AuthResponseAgent createNewAgent(AgentDto agentDto) {
         List<AgentDto> agents = new ArrayList<>();
         agentRepository.findAll().forEach(agent -> agents.add(entityDtoConverter.convertAgentToDto(agent)));
         Stream<AgentDto> agentDtoStream = agents.stream();
         if (agentDtoStream.noneMatch(s -> Objects.equals(s.getUserName(), agentDto.getUserName()))) {
-            User createdUser = agentRepository.save(entityDtoConverter.convertDtoToAgent(agentDto));
-            var jwtToken = jwtService.generateToken(createdUser);
-            return saveTokenAndGetAuthResponse(createdUser, jwtToken);
-        }else return new AuthResponse();
+            Agent createdAgent = agentRepository.save(entityDtoConverter.convertDtoToAgent(agentDto));
+            var jwtToken = jwtService.generateToken(createdAgent);
+            saveToken(createdAgent, jwtToken);
+            AuthResponseAgent authResponse = new AuthResponseAgent();
+            authResponse.setAgent(entityDtoConverter.convertAgentToDto(createdAgent));
+            authResponse.setToken(jwtToken);
+            return authResponse;
+        }else return new AuthResponseAgent();
     }
 
     @Override
-    public AuthResponse createNewAdmin(AdminDto adminDto) {
+    public AuthResponseAdmin createNewAdmin(AdminDto adminDto) {
         List<AdminDto> admins = new ArrayList<>();
         adminRepository.findAll().forEach(admin -> admins.add(entityDtoConverter.convertAdminToDto(admin)));
         Stream<AdminDto> adminDtoStream = admins.stream();
         if (adminDtoStream.noneMatch(adm -> adm.getUserName().equals(adminDto.getUserName()))) {
-            User createdAdmin = adminRepository.save(entityDtoConverter.convertDtoToAdmin(adminDto));
+            Admin createdAdmin = adminRepository.save(entityDtoConverter.convertDtoToAdmin(adminDto));
             var jwtToken = jwtService.generateToken(createdAdmin);
-            return saveTokenAndGetAuthResponse(createdAdmin, jwtToken);
-        }else return new AuthResponse();
+            saveToken(createdAdmin, jwtToken);
+            AuthResponseAdmin authResponse = new AuthResponseAdmin();
+            authResponse.setAdmin(entityDtoConverter.convertAdminToDto(createdAdmin));
+            authResponse.setToken(jwtToken);
+            return authResponse;
+        }else return new AuthResponseAdmin();
     }
 
     @Override
@@ -89,20 +98,23 @@ public class AuthServiceImpl implements AuthService {
         User authenticatedUser = userRepository.findUserByUserName(userName)
                 .orElseThrow(); //Exception handling to be improved to include checks for username and password correctness
         var token = jwtService.generateToken(authenticatedUser);
-        return saveTokenAndGetAuthResponse(authenticatedUser, token);
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setUser(entityDtoConverter.convertUserToDto(authenticatedUser));
+        authResponse.setToken(token);
+        return authResponse;
     }
 
-    private AuthResponse saveTokenAndGetAuthResponse(User user, String jwtToken) {
+    private void saveToken(User user, String jwtToken) {
         Token token = new Token();
         token.setToken(jwtToken);
         token.setUserId(user.getUserId());
         token.setExpired(false);
         token.setRevoked(false);
         tokenRepository.save(token);
-        AuthResponse authResponse = new AuthResponse();
-        authResponse.setUser(entityDtoConverter.convertUserToDto(user));
-        authResponse.setToken(jwtToken);
-        return authResponse;
+//        AuthResponseCustomer authResponse = new AuthResponseCustomer();
+//        authResponse.setUser(entityDtoConverter.convertUserToDto(user));
+//        authResponse.setToken(jwtToken);
+//        return authResponse;
     }
 
 }

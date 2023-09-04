@@ -2,6 +2,9 @@ package com.ecosmart.manager.controllerImpl;
 
 import com.ecosmart.manager.controller.AuthController;
 import com.ecosmart.manager.data.AuthResponse;
+import com.ecosmart.manager.data.AuthResponseAdmin;
+import com.ecosmart.manager.data.AuthResponseAgent;
+import com.ecosmart.manager.data.AuthResponseCustomer;
 import com.ecosmart.manager.dto.AdminDto;
 import com.ecosmart.manager.dto.AgentDto;
 import com.ecosmart.manager.dto.CustomerDto;
@@ -18,17 +21,17 @@ public class AuthControllerImpl implements AuthController {
     }
 
     @Override
-    public ResponseEntity<AuthResponse> createNewCustomer(CustomerDto customerDto) {
+    public ResponseEntity<AuthResponseCustomer> createNewCustomer(CustomerDto customerDto) {
         return ResponseEntity.ok(authService.createNewCustomer(customerDto));
     }
 
     @Override
-    public ResponseEntity<AuthResponse> createNewAgent(AgentDto agentDto) {
+    public ResponseEntity<AuthResponseAgent> createNewAgent(AgentDto agentDto) {
         return ResponseEntity.ok(authService.createNewAgent(agentDto));
     }
 
     @Override
-    public ResponseEntity<AuthResponse> createNewAdmin(AdminDto adminDto) {
+    public ResponseEntity<AuthResponseAdmin> createNewAdmin(AdminDto adminDto) {
         return ResponseEntity.ok(authService.createNewAdmin(adminDto));
     }
 

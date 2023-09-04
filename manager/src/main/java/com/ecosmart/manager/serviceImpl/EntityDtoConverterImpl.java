@@ -52,8 +52,12 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
     public CustomerDto convertCustomerToDto(Customer customer) {
         List<Integer> binIds = new ArrayList<>();
         List<Integer> requestIds = new ArrayList<>();
-        customer.getBinList().forEach(bin -> binIds.add(bin.getBinId()));
-        customer.getRequests().forEach(disposalRequest -> requestIds.add(disposalRequest.getRequestId()));
+        if (customer.getBinList() != null) {
+            customer.getBinList().forEach(bin -> binIds.add(bin.getBinId()));
+        }
+        if (customer.getRequests() != null) {
+            customer.getRequests().forEach(disposalRequest -> requestIds.add(disposalRequest.getRequestId()));
+        }
 
         CustomerDto customerDto = new CustomerDto();
         customerDto.setUserId(customer.getUserId());
@@ -73,7 +77,9 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
     @Override
     public AgentDto convertAgentToDto(Agent agent) {
         List<Integer> requestIds = new ArrayList<>();
-        agent.getRequestListHandled().forEach(disposalRequest -> requestIds.add(disposalRequest.getRequestId()));
+        if (agent.getRequestListHandled() != null) {
+            agent.getRequestListHandled().forEach(disposalRequest -> requestIds.add(disposalRequest.getRequestId()));
+        }
         AgentDto agentDto = new AgentDto();
         agentDto.setUserId(agent.getUserId());
         agentDto.setUserName(agent.getUsername());
@@ -90,7 +96,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
 
     @Override
     public Agent convertDtoToAgent(AgentDto agentDto) {
-        List<DisposalRequest> disposalRequests = requestRepository.findAllById(agentDto.getRequestIds());
+        //List<DisposalRequest> disposalRequests = requestRepository.findAllById(agentDto.getRequestIds());
         Agent agent = new Agent();
         agent.setUserId(agentDto.getUserId());
         agent.setUserName(agentDto.getUserName());
@@ -101,7 +107,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         agent.setRole(agentDto.getRole());
         agent.setPhoneNumber(agentDto.getPhoneNumber());
         agent.setCurrentLocation(agentDto.getCurrentLocation());
-        agent.setRequestListHandled(disposalRequests);
+        //agent.setRequestListHandled(disposalRequests);
         return agent;
     }
 

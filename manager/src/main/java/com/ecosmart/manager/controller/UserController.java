@@ -5,6 +5,8 @@ import com.ecosmart.manager.dto.CustomerDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/users")
 public interface UserController {
@@ -25,4 +27,13 @@ public interface UserController {
 
     @DeleteMapping("/agent/{id}/delete")
     ResponseEntity<Void> deleteAgent (@PathVariable("id") Integer agentId);
+
+    @GetMapping("/agents")
+    ResponseEntity<List<AgentDto>> getAllAgents();
+    @GetMapping("/customers")
+    ResponseEntity<List<CustomerDto>> getAllCustomers();
+    @GetMapping("/agent/{id}")
+    ResponseEntity<AgentDto> getAgentDetailsById(@PathVariable("id") Integer agentId);
+    @GetMapping("/customer/{id}")
+    ResponseEntity<CustomerDto> getCustomerDetailsById(@PathVariable("id") Integer customerId);
 }

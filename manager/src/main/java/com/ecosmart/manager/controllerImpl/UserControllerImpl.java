@@ -7,6 +7,8 @@ import com.ecosmart.manager.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 @Controller
 public class UserControllerImpl implements UserController {
     private final UserService userService;
@@ -59,5 +61,25 @@ public class UserControllerImpl implements UserController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @Override
+    public ResponseEntity<List<AgentDto>> getAllAgents() {
+        return ResponseEntity.ok(userService.getAllAgents());
+    }
+
+    @Override
+    public ResponseEntity<List<CustomerDto>> getAllCustomers() {
+        return ResponseEntity.ok(userService.getAllCustomers());
+    }
+
+    @Override
+    public ResponseEntity<AgentDto> getAgentDetailsById(Integer agentId) {
+        return ResponseEntity.ok(userService.findAgentById(agentId));
+    }
+
+    @Override
+    public ResponseEntity<CustomerDto> getCustomerDetailsById(Integer customerId) {
+        return ResponseEntity.ok(userService.findCustomerById(customerId));
     }
 }

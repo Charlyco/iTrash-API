@@ -85,7 +85,7 @@ public class DisposalRequestServiceImpl implements DisposalRequestService {
     @Override
     public String generateRequest(DisposalRequestDto requestDto) throws FirebaseMessagingException {
         DisposalRequest disposalRequest = new DisposalRequest();
-        disposalRequest.setRequestStatus(RequestStatus.SENT);
+        disposalRequest.setRequestStatus(requestDto.getRequestStatus());
         disposalRequest.setBin(binRepository.findById(requestDto.getBinId()).orElseThrow());
         disposalRequest.setCustomer(customerRepository.findById(requestDto.getCustomerId()).orElseThrow());
         DisposalRequest savedRequest = requestRepository.save(disposalRequest);

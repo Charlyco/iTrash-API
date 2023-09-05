@@ -10,18 +10,24 @@ import com.ecosmart.manager.repository.UserRepository;
 import com.ecosmart.manager.service.EntityDtoConverter;
 import com.ecosmart.manager.service.UserService;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.util.EnumUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final CustomerRepository customerRepository;
     private final AgentRepository agentRepository;
-    private final UserRepository userRepository;
     private final EntityDtoConverter entityDtoConverter;
 
-    public UserServiceImpl(CustomerRepository customerRepository, AgentRepository agentRepository, UserRepository userRepository, EntityDtoConverter entityDtoConverter) {
+    public UserServiceImpl(
+            CustomerRepository customerRepository,
+            AgentRepository agentRepository,
+            EntityDtoConverter entityDtoConverter
+    ) {
         this.customerRepository = customerRepository;
         this.agentRepository = agentRepository;
-        this.userRepository = userRepository;
         this.entityDtoConverter = entityDtoConverter;
     }
 
@@ -70,6 +76,26 @@ public class UserServiceImpl implements UserService {
             agentRepository.deleteById(agentId);
             return true;
         }else return false;
+    }
+
+    @Override
+    public List<AgentDto> getAllAgents() {
+        List<Agent> agents = agentRepository.findAll();
+        List<AgentDto> agentDtos = new ArrayList<>();
+        if (agents != null) {
+            agents.forEach(agent -> agentDtos.add(entityDtoConverter.convertAgentToDto(agent)));
+        }
+        return agentDtos;
+    }
+
+    @Override
+    public List<CustomerDto> getAllCustomers() {
+        List<Customer> customerList = customerRepository.findAll();
+        List<CustomerDto> customerDtoList = new ArrayList<>();
+        if (customerList != null) {
+            customerList.forEach(customer -> customerDtoList.add(entityDtoConverter.convertCustomerToDto(customer)));
+        }
+        return customerDtoList;
     }
 
     @Override

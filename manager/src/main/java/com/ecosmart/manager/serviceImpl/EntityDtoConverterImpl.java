@@ -203,26 +203,34 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         if (binDto.getBinId() != null) {
             binId = binDto.getBinId();
         }
+        Location location = new Location();
+        location.setLatitude(binDto.getLatitude());
+        location.setLongitude(binDto.getLongitude());
+
         Bin bin = new Bin();
         bin.setBinId(binId);
-        bin.setBinSize(binDto.getBinSize());
-        bin.setLocation(binDto.getLocation());
+        bin.setBinSize(BinSize.valueOf(binDto.getBinSize()));
+        bin.setLocation(location);
         bin.setDetailedAddress(binDto.getAddress());
-        bin.setBinStatus(binDto.getBinStatus());
-        bin.setOwnership(binDto.getOwnership());
+        bin.setBinStatus(BinStatus.valueOf(binDto.getBinStatus()));
+        bin.setOwnership(BinOwnership.valueOf(binDto.getOwnership()));
         bin.setCustomer(customerRepository.findById(binDto.getUserId()).orElseThrow());
         return bin;
     }
 
     @Override
     public BinDto convertBinToDto(Bin bin) {
+        Double latitude = bin.getLocation().getLatitude();
+        Double longitude = bin.getLocation().getLongitude();
+
         BinDto binDto = new BinDto();
         binDto.setBinId(bin.getBinId());
-        binDto.setBinSize(bin.getBinSize());
-        binDto.setLocation(bin.getLocation());
+        binDto.setBinSize(bin.getBinSize().name());
+        binDto.setLatitude(latitude);
+        binDto.setLongitude(longitude);
         binDto.setAddress(binDto.getAddress());
-        binDto.setBinStatus(bin.getBinStatus());
-        binDto.setOwnership(bin.getOwnership());
+        binDto.setBinStatus(bin.getBinStatus().name());
+        binDto.setOwnership(bin.getOwnership().name());
         binDto.setUserId(bin.getCustomer().getUserId());
         return binDto;
     }

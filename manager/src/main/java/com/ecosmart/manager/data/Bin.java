@@ -16,7 +16,8 @@ public class Bin {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer binId;
-    private Double binSize;
+    @Enumerated(EnumType.STRING)
+    private BinSize binSize;
     @Embedded
     private Location location;
     private String detailedAddress;

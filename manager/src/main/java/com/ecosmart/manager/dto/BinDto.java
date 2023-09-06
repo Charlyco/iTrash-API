@@ -10,10 +10,11 @@ import lombok.Setter;
 @Setter
 public class BinDto {
     private Integer binId;
-    private Double binSize;
-    private Location location;
+    private String binSize;
+    private Double latitude;
+    private Double longitude;
     private String address;
-    private BinOwnership ownership;
-    private BinStatus binStatus;
+    private String ownership;
+    private String binStatus;
     private Integer userId;
 }

@@ -7,6 +7,7 @@ import com.ecosmart.manager.service.EntityDtoConverter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -174,7 +175,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         requestDto.setRequestStatus(request.getRequestStatus().name());
         requestDto.setBinId(request.getBin().getBinId());
         requestDto.setCustomerId(request.getCustomer().getUserId());
-        requestDto.setRequestDate(request.getRequestDate());
+        requestDto.setRequestDate(String.valueOf(request.getRequestDate()));
         requestDto.setAgentId(request.getAgent().getUserId());
 
         return requestDto;
@@ -191,7 +192,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         request.setRequestStatus(RequestStatus.valueOf(requestDto.getRequestStatus()));
         request.setBin(binRepository.findById(requestDto.getBinId()).orElseThrow());
         request.setCustomer(customerRepository.findById(requestDto.getCustomerId()).orElseThrow());
-        request.setRequestDate(requestDto.getRequestDate());
+        request.setRequestDate(LocalDateTime.parse(requestDto.getRequestDate()));
         request.setAgent(agentRepository.findById(requestDto.getAgentId()).orElseThrow());
 
         return request;

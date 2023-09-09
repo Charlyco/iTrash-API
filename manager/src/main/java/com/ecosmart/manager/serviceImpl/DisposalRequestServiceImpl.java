@@ -46,6 +46,21 @@ public class DisposalRequestServiceImpl implements DisposalRequestService {
     }
 
     @Override
+    public List<DisposalRequestDto> getRequestListByLocation(Double latitude, Double longitude) {
+        List<DisposalRequest> allRequests = requestRepository.findAll();
+        List<DisposalRequestDto> nearRequests = new ArrayList<>();
+        Location agentLocation = new Location();
+        agentLocation.setLatitude(latitude);
+        agentLocation.setLongitude(longitude);
+        allRequests.forEach(request -> {
+            if (calculateDistance(agentLocation, request.getBin().getLocation())) {
+                nearRequests.add(entityDtoConverter.convertRequestToDto(request));
+            }
+        });
+        return nearRequests;
+    }
+
+    @Override
     public List<DisposalRequestDto> getAllRequestHandledByAgent(Integer agentId) {
         List<DisposalRequestDto> availableRequests = new ArrayList<>();
         requestRepository.findAllByAgent_UserId(agentId).forEach(request ->

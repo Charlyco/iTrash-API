@@ -14,6 +14,9 @@ public interface DisposalRequestController {
     @GetMapping("/status")
     ResponseEntity<List<DisposalRequestDto>> getRequestsByStatus(@RequestParam("status") RequestStatus requestStatus);
 
+    @GetMapping()
+    ResponseEntity<List<DisposalRequestDto>> getPendingRequestByLocation(@RequestParam("latitude") Double latitude, @RequestParam("longitude") Double longitude);
+
     @GetMapping("/{agentId}")
     ResponseEntity<List<DisposalRequestDto>> getAllRequestHandledByAgent(@PathVariable Integer agentId );
 

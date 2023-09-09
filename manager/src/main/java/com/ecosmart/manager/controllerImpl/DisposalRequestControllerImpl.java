@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+
 @Controller
 public class DisposalRequestControllerImpl implements DisposalRequestController {
     private final DisposalRequestService requestService;
@@ -21,6 +22,11 @@ public class DisposalRequestControllerImpl implements DisposalRequestController 
     public ResponseEntity<List<DisposalRequestDto>> getRequestsByStatus(RequestStatus requestStatus) {
         var requests = requestService.getRequestsByStatus(requestStatus);
         return ResponseEntity.ok(requests);
+    }
+
+    @Override
+    public ResponseEntity<List<DisposalRequestDto>> getPendingRequestByLocation(Double latitude, Double longitude) {
+        return ResponseEntity.ok(requestService.getRequestListByLocation(latitude, longitude));
     }
 
     @Override

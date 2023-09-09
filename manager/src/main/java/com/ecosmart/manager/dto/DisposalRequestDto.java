@@ -13,6 +13,6 @@ public class DisposalRequestDto {
     private String requestStatus;
     private Integer binId;
     private Integer customerId;
-    private LocalDateTime requestDate;
+    private String requestDate;
     private Integer agentId;
 }

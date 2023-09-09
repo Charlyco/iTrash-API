@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -44,7 +45,8 @@ public class AuthServiceImpl implements AuthService {
         List<CustomerDto> customers = new ArrayList<>();
         customerRepository.findAll().forEach(customer -> customers.add(entityDtoConverter.convertCustomerToDto(customer)));
         Stream<CustomerDto> customerDtoStream = customers.stream();
-        if (customerDtoStream.noneMatch(s -> Objects.equals(s.getUserName(), customerDto.getUserName()))) {
+        if (customerDtoStream.noneMatch(s -> Objects.equals(s.getUserName(), customerDto.getUserName()))
+        ) {
             Customer createdCustomer = customerRepository.save(entityDtoConverter.convertDtoToCustomer(customerDto));
             var jwtToken = jwtService.generateToken(createdCustomer);
             saveToken(createdCustomer, jwtToken);

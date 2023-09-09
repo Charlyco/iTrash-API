@@ -176,7 +176,9 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         requestDto.setBinId(request.getBin().getBinId());
         requestDto.setCustomerId(request.getCustomer().getUserId());
         requestDto.setRequestDate(String.valueOf(request.getRequestDate()));
-        requestDto.setAgentId(request.getAgent().getUserId());
+        if (request.getAgent() != null) {
+            requestDto.setAgentId(request.getAgent().getUserId());
+        }
 
         return requestDto;
     }
@@ -193,7 +195,10 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         request.setBin(binRepository.findById(requestDto.getBinId()).orElseThrow());
         request.setCustomer(customerRepository.findById(requestDto.getCustomerId()).orElseThrow());
         request.setRequestDate(LocalDateTime.parse(requestDto.getRequestDate()));
-        request.setAgent(agentRepository.findById(requestDto.getAgentId()).orElseThrow());
+        if (requestDto.getAgentId() != null) {
+            request.setAgent(agentRepository.findById(requestDto.getAgentId()).orElseThrow());
+        }
+
 
         return request;
     }

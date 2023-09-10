@@ -14,24 +14,26 @@ public interface DisposalRequestController {
     @GetMapping("/status")
     ResponseEntity<List<DisposalRequestDto>> getRequestsByStatus(@RequestParam("status") RequestStatus requestStatus);
 
-    @GetMapping()
+    @GetMapping("/location")
     ResponseEntity<List<DisposalRequestDto>> getPendingRequestByLocation(@RequestParam("latitude") Double latitude, @RequestParam("longitude") Double longitude);
 
     @GetMapping("/{agentId}")
     ResponseEntity<List<DisposalRequestDto>> getAllRequestHandledByAgent(@PathVariable Integer agentId );
 
     @GetMapping("/{requestId}")
-    ResponseEntity<String> getRequestStatus (@PathVariable("requestId") Integer requestId);
+    ResponseEntity<String> getRequestStatus(@PathVariable("requestId") Integer requestId);
 
     @PutMapping("/{requestId}")
     ResponseEntity<String> updateRequestStatus(@PathVariable("requestId") Integer requestId, @RequestParam("status") RequestStatus status);
 
     @PutMapping("/assign/{requestId}")
-    ResponseEntity<String> assignRequestToAgent(@PathVariable("requestId") Integer requestId, @RequestParam("agentId") Integer agentId);
+    ResponseEntity<Boolean> assignRequestToAgent(@PathVariable("requestId") Integer requestId, @RequestParam("agentId") Integer agentId);
 
     @PostMapping("/create")
     ResponseEntity<String> generateRequest(@RequestBody DisposalRequestDto requestDto) throws FirebaseMessagingException;
 
+    @GetMapping()
+    ResponseEntity<DisposalRequestDto> getRequestById(@RequestParam("requestId") Integer requestId);
     @PutMapping("/notify/subscribe")
     ResponseEntity<Integer> subscribeToTopic(@RequestParam List<String> tokens, @RequestParam String topic) throws FirebaseMessagingException;
 

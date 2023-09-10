@@ -48,15 +48,20 @@ public class DisposalRequestControllerImpl implements DisposalRequestController 
     }
 
     @Override
-    public ResponseEntity<String> assignRequestToAgent(Integer requestId, Integer agentId) {
-        String agentUserName = requestService.assignRequestToAgent(requestId, agentId);
-        return ResponseEntity.ok(agentUserName);
+    public ResponseEntity<Boolean> assignRequestToAgent(Integer requestId, Integer agentId) {
+        var isAssigned = requestService.assignRequestToAgent(requestId, agentId);
+        return ResponseEntity.ok(isAssigned);
     }
 
     @Override
     public ResponseEntity<String> generateRequest(DisposalRequestDto requestDto) throws FirebaseMessagingException {
         String requestStatus = requestService.generateRequest(requestDto);
         return ResponseEntity.ok(requestStatus);
+    }
+
+    @Override
+    public ResponseEntity<DisposalRequestDto> getRequestById(Integer requestId) {
+        return ResponseEntity.ok(requestService.getRequestById(requestId));
     }
 
     @Override

@@ -87,14 +87,14 @@ public class DisposalRequestServiceImpl implements DisposalRequestService {
     }
 
     @Override
-    public String assignRequestToAgent(Integer requestId, Integer agentId) {
+    public Boolean assignRequestToAgent(Integer requestId, Integer agentId) {
         if (requestRepository.findById(requestId).isPresent()) {
             DisposalRequest request = requestRepository.findById(requestId).orElseThrow();
             request.setAgent(agentRepository.findById(agentId).orElseThrow());
             requestRepository.save(request);
-            return requestRepository.findById(requestId).orElseThrow().getAgent().getUsername();
+            return requestRepository.findById(requestId).orElseThrow().getAgent().getUsername() != null;
         }
-        return "Disposal Request not found";
+        return false;
     }
 
     @Override
@@ -167,5 +167,11 @@ public class DisposalRequestServiceImpl implements DisposalRequestService {
     public Integer unsubscribeClientDevice(List<String> tokens, String topic) throws FirebaseMessagingException {
         TopicManagementResponse response = FirebaseMessaging.getInstance().unsubscribeFromTopic(tokens, topic);
         return response.getSuccessCount();
+    }
+
+    @Override
+    public DisposalRequestDto getRequestById(Integer requestId) {
+        DisposalRequest request = requestRepository.findById(requestId).orElseThrow();
+        return entityDtoConverter.convertRequestToDto(request);
     }
 }

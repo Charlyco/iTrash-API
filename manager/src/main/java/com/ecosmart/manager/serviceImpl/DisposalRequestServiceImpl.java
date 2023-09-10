@@ -91,6 +91,7 @@ public class DisposalRequestServiceImpl implements DisposalRequestService {
         if (requestRepository.findById(requestId).isPresent()) {
             DisposalRequest request = requestRepository.findById(requestId).orElseThrow();
             request.setAgent(agentRepository.findById(agentId).orElseThrow());
+            request.setRequestStatus(RequestStatus.PROCESSING);
             requestRepository.save(request);
             return requestRepository.findById(requestId).orElseThrow().getAgent().getUsername() != null;
         }
@@ -103,6 +104,7 @@ public class DisposalRequestServiceImpl implements DisposalRequestService {
         disposalRequest.setRequestStatus(RequestStatus.valueOf(requestDto.getRequestStatus()));
         disposalRequest.setBin(binRepository.findById(requestDto.getBinId()).orElseThrow());
         disposalRequest.setCustomer(customerRepository.findById(requestDto.getCustomerId()).orElseThrow());
+        disposalRequest.setRequestStatus(RequestStatus.RECEIVED);
         DisposalRequest savedRequest = requestRepository.save(disposalRequest);
         notifyAvailableAgents(savedRequest);
         return savedRequest.getRequestStatus().name();
@@ -110,13 +112,7 @@ public class DisposalRequestServiceImpl implements DisposalRequestService {
 
     private void notifyAvailableAgents(DisposalRequest requestDto) throws FirebaseMessagingException {
         List<Agent> agentList = agentRepository.findAll();
-        List<Agent> availableAgents = new ArrayList<>();
-        agentList.forEach(agent -> {
-            if (calculateDistance(agent.getCurrentLocation(), requestDto.getBin().getLocation())) {
-                availableAgents.add(agent);
-            }
-        });
-        sendNotification(availableAgents, entityDtoConverter.convertRequestToDto(requestDto));
+        sendNotification(agentList, entityDtoConverter.convertRequestToDto(requestDto));
     }
 
     private boolean calculateDistance(Location agentLocation, Location binLocation) {

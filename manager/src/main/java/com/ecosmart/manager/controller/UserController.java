@@ -10,16 +10,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 public interface UserController {
-    @GetMapping("/customer/{userName}")
-    ResponseEntity<CustomerDto> loadCustomerDetails(@PathVariable("userName") String userName);
+    @GetMapping("/customer/userName")
+    ResponseEntity<CustomerDto> loadCustomerDetails(@RequestParam("userName") String userName);
 
-    @GetMapping("/agent/{userName}")
-    ResponseEntity<AgentDto> loadAgentDetails(@PathVariable("userName") String userName);
+    @GetMapping("/agent/userName")
+    ResponseEntity<AgentDto> loadAgentDetails(@RequestParam("userName") String userName);
 
-    @PutMapping("/customer/{id}")
+    @PutMapping("/customer/{id}/update")
     ResponseEntity<Void> updateCustomerDetails(@PathVariable("id") Integer customerId, @RequestBody CustomerDto customerUpdate);
 
-    @PutMapping("/agent/{id}")
+    @PutMapping("/agent/{id}/update")
     ResponseEntity<Void> updateAgentDetails (@PathVariable("id") Integer agentId, @RequestBody AgentDto agentDto);
 
     @DeleteMapping("/customer/{id}/delete")

@@ -30,7 +30,7 @@ public interface DisposalRequestController {
     ResponseEntity<Boolean> assignRequestToAgent(@PathVariable("requestId") Integer requestId, @RequestParam("agentId") Integer agentId);
 
     @PostMapping("/create")
-    ResponseEntity<String> generateRequest(@RequestBody DisposalRequestDto requestDto) throws FirebaseMessagingException;
+    ResponseEntity<Integer> generateRequest(@RequestBody DisposalRequestDto requestDto) throws FirebaseMessagingException;
 
     @GetMapping()
     ResponseEntity<DisposalRequestDto> getRequestById(@RequestParam("requestId") Integer requestId);

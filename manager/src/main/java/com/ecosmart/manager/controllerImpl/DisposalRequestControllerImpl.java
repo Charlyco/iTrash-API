@@ -54,9 +54,9 @@ public class DisposalRequestControllerImpl implements DisposalRequestController 
     }
 
     @Override
-    public ResponseEntity<String> generateRequest(DisposalRequestDto requestDto) throws FirebaseMessagingException {
-        String requestStatus = requestService.generateRequest(requestDto);
-        return ResponseEntity.ok(requestStatus);
+    public ResponseEntity<Integer> generateRequest(DisposalRequestDto requestDto) throws FirebaseMessagingException {
+        Integer requestId = requestService.generateRequest(requestDto);
+        return ResponseEntity.ok(requestId);
     }
 
     @Override

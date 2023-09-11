@@ -14,6 +14,7 @@ import com.ecosmart.manager.service.EntityDtoConverter;
 import com.google.firebase.messaging.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 @Service
@@ -99,15 +100,16 @@ public class DisposalRequestServiceImpl implements DisposalRequestService {
     }
 
     @Override
-    public String generateRequest(DisposalRequestDto requestDto) throws FirebaseMessagingException {
+    public Integer generateRequest(DisposalRequestDto requestDto) throws FirebaseMessagingException {
         DisposalRequest disposalRequest = new DisposalRequest();
         disposalRequest.setRequestStatus(RequestStatus.valueOf(requestDto.getRequestStatus()));
         disposalRequest.setBin(binRepository.findById(requestDto.getBinId()).orElseThrow());
         disposalRequest.setCustomer(customerRepository.findById(requestDto.getCustomerId()).orElseThrow());
         disposalRequest.setRequestStatus(RequestStatus.RECEIVED);
+        disposalRequest.setRequestDate(LocalDateTime.parse(requestDto.getRequestDate()));
         DisposalRequest savedRequest = requestRepository.save(disposalRequest);
         notifyAvailableAgents(savedRequest);
-        return savedRequest.getRequestStatus().name();
+        return savedRequest.getRequestId();
     }
 
     private void notifyAvailableAgents(DisposalRequest requestDto) throws FirebaseMessagingException {

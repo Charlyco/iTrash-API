@@ -42,7 +42,7 @@ public class DisposalRequestControllerImpl implements DisposalRequestController 
     }
 
     @Override
-    public ResponseEntity<String> updateRequestStatus(Integer requestId, RequestStatus status) {
+    public ResponseEntity<String> updateRequestStatus(Integer requestId, String status) {
         String newStatus = requestService.updateRequestStatus(requestId, status);
         return ResponseEntity.ok(newStatus);
     }

@@ -13,7 +13,7 @@ public interface DisposalRequestService {
     List<DisposalRequestDto> getRequestListByLocation(Double latitude, Double longitude);
     List<DisposalRequestDto> getAllRequestHandledByAgent(Integer agentId);
     String getRequestStatus(Integer requestId);
-    String updateRequestStatus(Integer requestId, RequestStatus requestStatus);
+    String updateRequestStatus(Integer requestId, String requestStatus);
     Boolean assignRequestToAgent(Integer requestId, Integer agentId);
     Integer generateRequest(DisposalRequestDto requestDto) throws FirebaseMessagingException;
     void sendMessage(String topic, DisposalRequestDto requestDto) throws FirebaseMessagingException;

@@ -24,7 +24,7 @@ public interface DisposalRequestController {
     ResponseEntity<String> getRequestStatus(@PathVariable("requestId") Integer requestId);
 
     @PutMapping("/{requestId}")
-    ResponseEntity<String> updateRequestStatus(@PathVariable("requestId") Integer requestId, @RequestParam("status") String status);
+    ResponseEntity<Boolean> updateRequestStatus(@PathVariable("requestId") Integer requestId, @RequestParam("status") String status);
 
     @PutMapping("/assign/{requestId}")
     ResponseEntity<Boolean> assignRequestToAgent(@PathVariable("requestId") Integer requestId, @RequestParam("agentId") Integer agentId);

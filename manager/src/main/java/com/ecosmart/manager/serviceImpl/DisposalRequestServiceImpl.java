@@ -77,14 +77,14 @@ public class DisposalRequestServiceImpl implements DisposalRequestService {
     }
 
     @Override
-    public String updateRequestStatus(Integer requestId, String requestStatus) {
+    public Boolean updateRequestStatus(Integer requestId, String requestStatus) {
         if (requestRepository.findById(requestId).isPresent()) {
             DisposalRequest request = requestRepository.findById(requestId).orElseThrow();
             request.setRequestStatus(RequestStatus.valueOf(requestStatus));
             requestRepository.save(request);
-            return requestRepository.findById(requestId).orElseThrow().getRequestStatus().name();
+            return true;
         }
-        return "Disposal Request not found";
+        return false;
     }
 
     @Override

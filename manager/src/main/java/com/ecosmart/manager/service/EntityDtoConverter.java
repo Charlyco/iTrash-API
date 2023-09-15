@@ -18,5 +18,7 @@ public interface EntityDtoConverter {
     DisposalRequest convertDtoToRequest(DisposalRequestDto requestDto);
     Bin convertDtoToBin(BinDto binDto);
     BinDto convertBinToDto(Bin bin);
+    BinRequest convertDtoToBinRequest(BinRequestDto binRequestDto);
+    BinRequestDto convertBinRequestToDto(BinRequest binRequest);
 
 }

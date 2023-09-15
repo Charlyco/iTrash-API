@@ -39,4 +39,10 @@ public class AuthControllerImpl implements AuthController {
     public ResponseEntity<AuthResponse> signIn(String userName, String password) {
         return ResponseEntity.ok(authService.signIn(userName, password));
     }
+
+    @Override
+    public ResponseEntity<Void> revokeToken(String token) {
+        authService.revokeToken(token);
+        return ResponseEntity.noContent().build();
+    }
 }

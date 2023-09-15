@@ -2,6 +2,7 @@ package com.ecosmart.manager.service;
 
 import com.ecosmart.manager.data.Location;
 import com.ecosmart.manager.data.RequestStatus;
+import com.ecosmart.manager.dto.BinRequestDto;
 import com.ecosmart.manager.dto.DisposalRequestDto;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.stereotype.Service;
@@ -20,4 +21,5 @@ public interface DisposalRequestService {
     Integer subScribeClientDevice(List<String> tokens, String topic) throws FirebaseMessagingException;
     Integer unsubscribeClientDevice(List<String> tokens, String topic) throws FirebaseMessagingException;
     DisposalRequestDto getRequestById(Integer requestId);
+
 }

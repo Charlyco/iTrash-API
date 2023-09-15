@@ -16,4 +16,5 @@ public interface AuthService {
     AuthResponseAdmin createNewAdmin(AdminDto adminDto);
     AuthResponse signIn(String userName, String password);
 
+    void revokeToken(String token);
 }

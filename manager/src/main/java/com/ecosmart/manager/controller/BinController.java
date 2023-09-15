@@ -1,8 +1,10 @@
 package com.ecosmart.manager.controller;
 
 import com.ecosmart.manager.data.Bin;
+import com.ecosmart.manager.data.BinRequest;
 import com.ecosmart.manager.data.BinStatus;
 import com.ecosmart.manager.dto.BinDto;
+import com.ecosmart.manager.dto.BinRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,8 +12,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/bin")
 public interface BinController {
-    @PostMapping
-    ResponseEntity<Integer> createNewBin(@RequestBody BinDto binDto);
     @PutMapping("/{binId}/status")
     ResponseEntity<Void> updateBinStatus(@PathVariable("binId") Integer binId, @RequestParam BinStatus binStatus);
     @PutMapping("/{binId}")
@@ -24,4 +24,14 @@ public interface BinController {
     ResponseEntity<List<BinDto>> getAllBins();
     @DeleteMapping("/binId")
     ResponseEntity<Void> deleteBinById(@RequestParam Integer binId);
+    @PostMapping("/request")
+    ResponseEntity<Integer> requestForBin(@RequestParam BinRequestDto binRequestDto);
+    @GetMapping("/request/{requestId}")
+    ResponseEntity<BinRequestDto> getBinRequestById(@PathVariable("requestId") Integer requestId);
+    @GetMapping("/request")
+    ResponseEntity<List<BinRequestDto>> getRequestsByStatus(@RequestParam String requestStatus);
+    @GetMapping("/request/all")
+    ResponseEntity<List<BinRequestDto>> getAllBinRequests();
+    @PutMapping("/request/{requestId}")
+    ResponseEntity<Boolean> updateBinRequestStatus(@PathVariable("requestId") Integer requestId, @RequestParam("requestStatus") String requestStatus);
 }

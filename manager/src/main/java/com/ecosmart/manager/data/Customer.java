@@ -21,4 +21,6 @@ public class Customer extends User {
 
     @OneToMany(mappedBy = "customer")
     private List<DisposalRequest> requests;
+    @OneToMany(mappedBy = "customer")
+    private List<BinRequest> binRequests;
 }

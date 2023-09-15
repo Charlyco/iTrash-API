@@ -1,29 +1,43 @@
 package com.ecosmart.manager.serviceImpl;
 
 import com.ecosmart.manager.data.Bin;
+import com.ecosmart.manager.data.BinRequest;
+import com.ecosmart.manager.data.BinRequestStatus;
 import com.ecosmart.manager.data.BinStatus;
 import com.ecosmart.manager.dto.BinDto;
+import com.ecosmart.manager.dto.BinRequestDto;
 import com.ecosmart.manager.repository.BinRepository;
+import com.ecosmart.manager.repository.BinRequestRepository;
 import com.ecosmart.manager.service.BinService;
 import com.ecosmart.manager.service.EntityDtoConverter;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class BinServiceImpl implements BinService {
     private  final BinRepository binRepository;
     private final EntityDtoConverter entityDtoConverter;
+    private final BinRequestRepository binRequestRepository;
 
-    public BinServiceImpl(BinRepository binRepository, EntityDtoConverter entityDtoConverter) {
+    public BinServiceImpl(BinRepository binRepository, EntityDtoConverter entityDtoConverter, BinRequestRepository binRequestRepository) {
         this.binRepository = binRepository;
         this.entityDtoConverter = entityDtoConverter;
+        this.binRequestRepository = binRequestRepository;
     }
 
-    @Override
-    public Integer createNewBin(BinDto binDto) {
-        Bin createdBin = binRepository.save(entityDtoConverter.convertDtoToBin(binDto));
-        return createdBin.getBinId();
+    public void createNewBin(BinRequest request) {
+        BinDto binDto = new BinDto();
+        binDto.setBinSize(request.getBinSize().name());
+        binDto.setLatitude(request.getLocation().getLatitude());
+        binDto.setLongitude(request.getLocation().getLongitude());
+        binDto.setAddress(request.getDetailedAddress());
+        binDto.setOwnership(request.getBinOwnership().name());
+        binDto.setBinStatus(BinStatus.EMPTY.name());
+        binDto.setUserId(request.getCustomer().getUserId());
+        binRepository.save(entityDtoConverter.convertDtoToBin(binDto));
     }
 
     @Override
@@ -77,5 +91,49 @@ public class BinServiceImpl implements BinService {
             binRepository.deleteById(binId);
             return true;
         }else return false;
+    }
+
+    @Override
+    public Integer requestForBin(BinRequestDto binRequestDto) {
+        BinRequest newRequest = binRequestRepository.save(entityDtoConverter.convertDtoToBinRequest(binRequestDto));
+        return newRequest.getRequestId();
+    }
+
+    @Override
+    public BinRequestDto getRequestById(Integer requestId) {
+        return entityDtoConverter.convertBinRequestToDto(binRequestRepository.findById(requestId).orElseThrow());
+    }
+
+    @Override
+    public List<BinRequestDto> getAllRequests() {
+        List<BinRequestDto> requestDtoList = new ArrayList<>();
+        List<BinRequest> requestList = binRequestRepository.findAll();
+        requestList.forEach(binRequest -> requestDtoList.add(
+                entityDtoConverter.convertBinRequestToDto(binRequest)
+        ));
+        return requestDtoList;
+    }
+
+    @Override
+    public List<BinRequestDto> getRequestsByStatus(String requestStatus) {
+        List<BinRequestDto> requestDtoList = new ArrayList<>();
+        List<BinRequest> requestList = binRequestRepository.findBinRequestByRequestStatus(BinRequestStatus.valueOf(requestStatus));
+        requestList.forEach(binRequest -> requestDtoList.add(
+                entityDtoConverter.convertBinRequestToDto(binRequest)
+        ));
+        return requestDtoList;
+    }
+
+    @Override
+    public Boolean updateBinRequestStatus(Integer requestId, String requestStatus) {
+        if (binRequestRepository.existsById(requestId)) {
+            BinRequest request = binRequestRepository.findById(requestId).orElseThrow();
+            request.setRequestStatus(BinRequestStatus.valueOf(requestStatus));
+            binRequestRepository.save(request);
+            if (Objects.equals(requestStatus, BinRequestStatus.APPROVED.name())) {
+                createNewBin(request);
+            }
+        }
+        return false;
     }
 }

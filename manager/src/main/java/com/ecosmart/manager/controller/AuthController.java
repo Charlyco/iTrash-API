@@ -24,5 +24,8 @@ public interface AuthController {
 
     @GetMapping("/signIn")
     ResponseEntity<AuthResponse> signIn(@RequestParam("userName") String userName, @RequestParam("password") String password);
+    @PutMapping("token")
+    ResponseEntity<Void> revokeToken(@RequestParam("token") String token);
+
 
 }

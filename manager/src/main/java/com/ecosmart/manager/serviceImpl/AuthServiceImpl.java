@@ -106,6 +106,15 @@ public class AuthServiceImpl implements AuthService {
         return authResponse;
     }
 
+    @Override
+    public void revokeToken(String token) {
+        Token tokenToRevoke = tokenRepository.findTokenByToken(token);
+        if (tokenToRevoke != null) {
+            tokenToRevoke.setRevoked(true);
+            tokenRepository.save(tokenToRevoke);
+        }
+    }
+
     private void saveToken(User user, String jwtToken) {
         Token token = new Token();
         token.setToken(jwtToken);
@@ -113,10 +122,6 @@ public class AuthServiceImpl implements AuthService {
         token.setExpired(false);
         token.setRevoked(false);
         tokenRepository.save(token);
-//        AuthResponseCustomer authResponse = new AuthResponseCustomer();
-//        authResponse.setUser(entityDtoConverter.convertUserToDto(user));
-//        authResponse.setToken(jwtToken);
-//        return authResponse;
     }
 
 }

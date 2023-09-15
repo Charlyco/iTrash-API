@@ -1,8 +1,8 @@
 package com.ecosmart.manager.data;
 
 public enum BinSize {
-    SMALL,
-    MEDIUM,
-    LARGE,
-    EXTRA_LARGE
+    ITRASH_MINI,
+    ITRASH_REGULAR,
+    ITRASH_MAX,
+    ITRASH_PREMIUM
 }

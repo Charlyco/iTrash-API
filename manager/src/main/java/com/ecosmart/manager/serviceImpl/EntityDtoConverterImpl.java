@@ -240,4 +240,39 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         binDto.setUserId(bin.getCustomer().getUserId());
         return binDto;
     }
+
+    @Override
+    public BinRequest convertDtoToBinRequest(BinRequestDto binRequestDto) {
+        Integer requestId = null;
+        if (binRequestDto.getRequestId() != null) {
+            requestId = binRequestDto.getRequestId();
+        }
+        Location location = new Location();
+        location.setLatitude(binRequestDto.getLatitude());
+        location.setLongitude(binRequestDto.getLongitude());
+
+        BinRequest binRequest = new BinRequest();
+        binRequest.setRequestId(requestId);
+        binRequest.setBinSize(BinSize.valueOf(binRequestDto.getBinSize()));
+        binRequest.setCustomer(customerRepository.findById(binRequestDto.getCustomerId()).orElseThrow());
+        binRequest.setLocation(location);
+        binRequest.setDetailedAddress(binRequestDto.getAddress());
+        binRequest.setRequestStatus(BinRequestStatus.valueOf(binRequestDto.getRequestStatus()));
+        binRequest.setRequestDate(LocalDateTime.parse(binRequestDto.getRequestDate()));
+        return binRequest;
+    }
+
+    @Override
+    public BinRequestDto convertBinRequestToDto(BinRequest binRequest) {
+        BinRequestDto requestDto = new BinRequestDto();
+        requestDto.setRequestId(binRequest.getRequestId());
+        requestDto.setBinSize(binRequest.getBinSize().name());
+        requestDto.setCustomerId(binRequest.getCustomer().getUserId());
+        requestDto.setLatitude(binRequest.getLocation().getLatitude());
+        requestDto.setLongitude(binRequest.getLocation().getLongitude());
+        requestDto.setAddress(binRequest.getDetailedAddress());
+        requestDto.setRequestStatus(binRequest.getRequestStatus().name());
+        requestDto.setRequestDate(binRequest.getRequestDate().toString());
+        return requestDto;
+    }
 }

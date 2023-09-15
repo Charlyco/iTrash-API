@@ -25,11 +25,11 @@ public interface BinController {
     @DeleteMapping("/binId")
     ResponseEntity<Void> deleteBinById(@RequestParam Integer binId);
     @PostMapping("/request")
-    ResponseEntity<Integer> requestForBin(@RequestParam BinRequestDto binRequestDto);
+    ResponseEntity<Integer> requestForBin(@RequestBody BinRequestDto binRequest);
     @GetMapping("/request/{requestId}")
     ResponseEntity<BinRequestDto> getBinRequestById(@PathVariable("requestId") Integer requestId);
     @GetMapping("/request")
-    ResponseEntity<List<BinRequestDto>> getRequestsByStatus(@RequestParam String requestStatus);
+    ResponseEntity<List<BinRequestDto>> getRequestsByStatus(@RequestParam("requestStatus") String requestStatus);
     @GetMapping("/request/all")
     ResponseEntity<List<BinRequestDto>> getAllBinRequests();
     @PutMapping("/request/{requestId}")

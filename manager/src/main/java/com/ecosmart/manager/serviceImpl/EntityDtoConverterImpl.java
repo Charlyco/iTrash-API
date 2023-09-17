@@ -234,7 +234,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         binDto.setBinSize(bin.getBinSize().name());
         binDto.setLatitude(latitude);
         binDto.setLongitude(longitude);
-        binDto.setAddress(binDto.getAddress());
+        binDto.setAddress(bin.getDetailedAddress());
         binDto.setBinStatus(bin.getBinStatus().name());
         binDto.setOwnership(bin.getOwnership().name());
         binDto.setUserId(bin.getCustomer().getUserId());

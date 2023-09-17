@@ -117,7 +117,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         Admin admin = new Admin();
         admin.setUserId(adminDto.getUserId());
         admin.setUserName(adminDto.getUserName());
-        admin.setFullName(admin.getFullName());
+        admin.setFullName(adminDto.getFullName());
         admin.setPassword(passwordEncoder.encode(adminDto.getPassword()));
         admin.setAddress(adminDto.getAddress());
         admin.setEmail(adminDto.getEmail());
@@ -161,7 +161,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         userDto.setUserName(user.getUsername());
         userDto.setFullName(user.getFullName());
         userDto.setPassword(user.getPassword());
-        userDto.setAddress(userDto.getAddress());
+        userDto.setAddress(user.getAddress());
         userDto.setEmail(user.getEmail());
         userDto.setRole(user.getRole());
         userDto.setPhoneNumber(user.getPhoneNumber());

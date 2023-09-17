@@ -257,6 +257,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         binRequest.setCustomer(customerRepository.findById(binRequestDto.getCustomerId()).orElseThrow());
         binRequest.setLocation(location);
         binRequest.setDetailedAddress(binRequestDto.getAddress());
+        binRequest.setBinOwnership(BinOwnership.valueOf(binRequestDto.getOwnership()));
         binRequest.setRequestStatus(BinRequestStatus.valueOf(binRequestDto.getRequestStatus()));
         binRequest.setRequestDate(LocalDateTime.parse(binRequestDto.getRequestDate()));
         return binRequest;
@@ -271,6 +272,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         requestDto.setLatitude(binRequest.getLocation().getLatitude());
         requestDto.setLongitude(binRequest.getLocation().getLongitude());
         requestDto.setAddress(binRequest.getDetailedAddress());
+        requestDto.setOwnership(binRequest.getBinOwnership().name());
         requestDto.setRequestStatus(binRequest.getRequestStatus().name());
         requestDto.setRequestDate(binRequest.getRequestDate().toString());
         return requestDto;

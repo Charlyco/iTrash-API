@@ -46,15 +46,19 @@ public class AuthServiceImpl implements AuthService {
         customerRepository.findAll().forEach(customer -> customers.add(entityDtoConverter.convertCustomerToDto(customer)));
         Stream<CustomerDto> customerDtoStream = customers.stream();
         if (customerDtoStream.noneMatch(s -> Objects.equals(s.getUserName(), customerDto.getUserName()))
-        ) {
-            Customer createdCustomer = customerRepository.save(entityDtoConverter.convertDtoToCustomer(customerDto));
-            var jwtToken = jwtService.generateToken(createdCustomer);
-            saveToken(createdCustomer, jwtToken);
-            AuthResponseCustomer authResponse = new AuthResponseCustomer();
-            authResponse.setCustomer(entityDtoConverter.convertCustomerToDto(createdCustomer));
-            authResponse.setToken(jwtToken);
-            return authResponse;
-        }else return new AuthResponseCustomer();
+        ) { if (customers.stream().noneMatch(user -> Objects.equals(user.getEmail(), customerDto.getEmail()))) {
+            if (customers.stream().noneMatch(user -> Objects.equals(user.getPhoneNumber(), customerDto.getPhoneNumber()))) {
+                Customer createdCustomer = customerRepository.save(entityDtoConverter.convertDtoToCustomer(customerDto));
+                var jwtToken = jwtService.generateToken(createdCustomer);
+                saveToken(createdCustomer, jwtToken);
+                AuthResponseCustomer authResponse = new AuthResponseCustomer();
+                authResponse.setCustomer(entityDtoConverter.convertCustomerToDto(createdCustomer));
+                authResponse.setToken(jwtToken);
+                return authResponse;
+                }
+            }
+        }
+        return new AuthResponseCustomer();
     }
 
     @Override
@@ -63,14 +67,19 @@ public class AuthServiceImpl implements AuthService {
         agentRepository.findAll().forEach(agent -> agents.add(entityDtoConverter.convertAgentToDto(agent)));
         Stream<AgentDto> agentDtoStream = agents.stream();
         if (agentDtoStream.noneMatch(s -> Objects.equals(s.getUserName(), agentDto.getUserName()))) {
-            Agent createdAgent = agentRepository.save(entityDtoConverter.convertDtoToAgent(agentDto));
-            var jwtToken = jwtService.generateToken(createdAgent);
-            saveToken(createdAgent, jwtToken);
-            AuthResponseAgent authResponse = new AuthResponseAgent();
-            authResponse.setAgent(entityDtoConverter.convertAgentToDto(createdAgent));
-            authResponse.setToken(jwtToken);
-            return authResponse;
-        }else return new AuthResponseAgent();
+            if (agents.stream().noneMatch(agent -> Objects.equals(agent.getEmail(), agentDto.getEmail()))) {
+                if (agents.stream().noneMatch(agent -> Objects.equals(agent.getEmail(), agentDto.getEmail()))) {
+                    Agent createdAgent = agentRepository.save(entityDtoConverter.convertDtoToAgent(agentDto));
+                    var jwtToken = jwtService.generateToken(createdAgent);
+                    saveToken(createdAgent, jwtToken);
+                    AuthResponseAgent authResponse = new AuthResponseAgent();
+                    authResponse.setAgent(entityDtoConverter.convertAgentToDto(createdAgent));
+                    authResponse.setToken(jwtToken);
+                    return authResponse;
+                }
+            }
+        }
+        return new AuthResponseAgent();
     }
 
     @Override
@@ -79,14 +88,19 @@ public class AuthServiceImpl implements AuthService {
         adminRepository.findAll().forEach(admin -> admins.add(entityDtoConverter.convertAdminToDto(admin)));
         Stream<AdminDto> adminDtoStream = admins.stream();
         if (adminDtoStream.noneMatch(adm -> adm.getUserName().equals(adminDto.getUserName()))) {
-            Admin createdAdmin = adminRepository.save(entityDtoConverter.convertDtoToAdmin(adminDto));
-            var jwtToken = jwtService.generateToken(createdAdmin);
-            saveToken(createdAdmin, jwtToken);
-            AuthResponseAdmin authResponse = new AuthResponseAdmin();
-            authResponse.setAdmin(entityDtoConverter.convertAdminToDto(createdAdmin));
-            authResponse.setToken(jwtToken);
-            return authResponse;
-        }else return new AuthResponseAdmin();
+            if (admins.stream().noneMatch(admin -> Objects.equals(admin.getPhoneNumber(), adminDto.getPhoneNumber()))) {
+                if (admins.stream().noneMatch(admin -> Objects.equals(admin.getEmail(), adminDto.getEmail()))) {
+                    Admin createdAdmin = adminRepository.save(entityDtoConverter.convertDtoToAdmin(adminDto));
+                    var jwtToken = jwtService.generateToken(createdAdmin);
+                    saveToken(createdAdmin, jwtToken);
+                    AuthResponseAdmin authResponse = new AuthResponseAdmin();
+                    authResponse.setAdmin(entityDtoConverter.convertAdminToDto(createdAdmin));
+                    authResponse.setToken(jwtToken);
+                    return authResponse;
+                }
+            }
+        }
+        return new AuthResponseAdmin();
     }
 
     @Override

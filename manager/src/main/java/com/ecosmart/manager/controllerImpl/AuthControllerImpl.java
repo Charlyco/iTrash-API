@@ -22,22 +22,38 @@ public class AuthControllerImpl implements AuthController {
 
     @Override
     public ResponseEntity<AuthResponseCustomer> createNewCustomer(CustomerDto customerDto) {
-        return ResponseEntity.ok(authService.createNewCustomer(customerDto));
+        AuthResponseCustomer responseCustomer = authService.createNewCustomer(customerDto);
+        if (responseCustomer.getCustomer().getUserId() != null) {
+            return ResponseEntity.ok(responseCustomer);
+        }
+        else return ResponseEntity.badRequest().build();
     }
 
     @Override
     public ResponseEntity<AuthResponseAgent> createNewAgent(AgentDto agentDto) {
-        return ResponseEntity.ok(authService.createNewAgent(agentDto));
+        AuthResponseAgent responseAgent = authService.createNewAgent(agentDto);
+        if (responseAgent.getAgent().getUserId() != null) {
+            return ResponseEntity.ok(responseAgent);
+        }
+       else return ResponseEntity.badRequest().build();
     }
 
     @Override
     public ResponseEntity<AuthResponseAdmin> createNewAdmin(AdminDto adminDto) {
-        return ResponseEntity.ok(authService.createNewAdmin(adminDto));
+        AuthResponseAdmin responseAdmin = authService.createNewAdmin(adminDto);
+        if (responseAdmin.getAdmin().getUserId() != null) {
+            return ResponseEntity.ok(responseAdmin);
+        }
+        else return ResponseEntity.badRequest().build();
     }
 
     @Override
     public ResponseEntity<AuthResponse> signIn(String userName, String password) {
-        return ResponseEntity.ok(authService.signIn(userName, password));
+        AuthResponse authResponse = authService.signIn(userName, password);
+        if (authResponse.getUser() != null) {
+            return ResponseEntity.ok(authResponse);
+        }
+        else return ResponseEntity.badRequest().build();
     }
 
     @Override

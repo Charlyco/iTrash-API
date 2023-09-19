@@ -27,5 +27,6 @@ public interface AuthController {
     @PutMapping("token")
     ResponseEntity<Void> revokeToken(@RequestParam("token") String token);
 
-
+    @PutMapping("password")
+    ResponseEntity<Boolean> resetPassword(@RequestParam("userName") String userName, @RequestParam("phone") String Phone, @RequestParam("password") String password);
 }

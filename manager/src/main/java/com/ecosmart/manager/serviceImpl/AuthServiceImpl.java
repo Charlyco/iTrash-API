@@ -10,10 +10,10 @@ import com.ecosmart.manager.service.AuthService;
 import com.ecosmart.manager.service.EntityDtoConverter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -28,8 +28,9 @@ public class AuthServiceImpl implements AuthService {
     private final TokenRepository tokenRepository;
     private final EntityDtoConverter entityDtoConverter;
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthServiceImpl(CustomerRepository customerRepository, AgentRepository agentRepository, UserRepository userRepository, AdminRepository adminRepository, JwtService jwtService, TokenRepository tokenRepository, EntityDtoConverter entityDtoConverter, AuthenticationManager authenticationManager) {
+    public AuthServiceImpl(CustomerRepository customerRepository, AgentRepository agentRepository, UserRepository userRepository, AdminRepository adminRepository, JwtService jwtService, TokenRepository tokenRepository, EntityDtoConverter entityDtoConverter, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
         this.customerRepository = customerRepository;
         this.agentRepository = agentRepository;
         this.userRepository = userRepository;
@@ -38,6 +39,7 @@ public class AuthServiceImpl implements AuthService {
         this.tokenRepository = tokenRepository;
         this.entityDtoConverter = entityDtoConverter;
         this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -127,6 +129,19 @@ public class AuthServiceImpl implements AuthService {
             tokenToRevoke.setRevoked(true);
             tokenRepository.save(tokenToRevoke);
         }
+    }
+
+    @Override
+    public Boolean resetPassword(String userName, String phone, String password) {
+        if (userRepository.findUserByUserName(userName).isPresent()) {
+            var user = userRepository.findUserByUserName(userName).orElseThrow();
+            if (Objects.equals(user.getPhoneNumber(), phone)) {
+                user.setPassword(passwordEncoder.encode(password));
+                userRepository.save(user);
+                return true;
+            }
+        }
+        return false;
     }
 
     private void saveToken(User user, String jwtToken) {

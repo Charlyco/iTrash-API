@@ -61,4 +61,13 @@ public class AuthControllerImpl implements AuthController {
         authService.revokeToken(token);
         return ResponseEntity.noContent().build();
     }
+
+    @Override
+    public ResponseEntity<Boolean> resetPassword(String userName, String phone, String password) {
+        Boolean onPasswordChanged = authService.resetPassword(userName, phone, password);
+        if (onPasswordChanged) {
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.badRequest().build();
+    }
 }

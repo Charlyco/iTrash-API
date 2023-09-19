@@ -15,6 +15,6 @@ public interface AuthService {
     AuthResponseAgent createNewAgent(AgentDto agentDto);
     AuthResponseAdmin createNewAdmin(AdminDto adminDto);
     AuthResponse signIn(String userName, String password);
-
     void revokeToken(String token);
+    Boolean resetPassword(String userName, String phone, String password);
 }

@@ -18,8 +18,7 @@ public class DisposalRequest {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer requestId;
     private RequestStatus requestStatus;
-    @ManyToOne
-    private Bin bin;
+    private Integer binId;
 
     @ManyToOne
     private Customer customer;

@@ -54,7 +54,7 @@ public class DisposalRequestServiceImpl implements DisposalRequestService {
         agentLocation.setLatitude(latitude);
         agentLocation.setLongitude(longitude);
         allRequests.forEach(request -> {
-            if (calculateDistance(agentLocation, request.getBin().getLocation())) {
+            if (calculateDistance(agentLocation, binRepository.findById(request.getBinId()).orElseThrow().getLocation())) {
                 nearRequests.add(entityDtoConverter.convertRequestToDto(request));
             }
         });
@@ -103,7 +103,7 @@ public class DisposalRequestServiceImpl implements DisposalRequestService {
     public Integer generateRequest(DisposalRequestDto requestDto) throws FirebaseMessagingException {
         DisposalRequest disposalRequest = new DisposalRequest();
         disposalRequest.setRequestStatus(RequestStatus.valueOf(requestDto.getRequestStatus()));
-        disposalRequest.setBin(binRepository.findById(requestDto.getBinId()).orElseThrow());
+        disposalRequest.setBinId(requestDto.getBinId());
         disposalRequest.setCustomer(customerRepository.findById(requestDto.getCustomerId()).orElseThrow());
         disposalRequest.setRequestStatus(RequestStatus.RECEIVED);
         disposalRequest.setRequestDate(LocalDateTime.parse(requestDto.getRequestDate()));

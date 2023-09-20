@@ -173,7 +173,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         DisposalRequestDto requestDto = new DisposalRequestDto();
         requestDto.setRequestId(request.getRequestId());
         requestDto.setRequestStatus(request.getRequestStatus().name());
-        requestDto.setBinId(request.getBin().getBinId());
+        requestDto.setBinId(request.getBinId());
         requestDto.setCustomerId(request.getCustomer().getUserId());
         requestDto.setRequestDate(String.valueOf(request.getRequestDate()));
         if (request.getAgent() != null) {
@@ -192,7 +192,7 @@ public class EntityDtoConverterImpl implements EntityDtoConverter {
         DisposalRequest request = new DisposalRequest();
         request.setRequestId(requestId);
         request.setRequestStatus(RequestStatus.valueOf(requestDto.getRequestStatus()));
-        request.setBin(binRepository.findById(requestDto.getBinId()).orElseThrow());
+        request.setBinId(requestDto.getBinId());
         request.setCustomer(customerRepository.findById(requestDto.getCustomerId()).orElseThrow());
         request.setRequestDate(LocalDateTime.parse(requestDto.getRequestDate()));
         if (requestDto.getAgentId() != null) {

@@ -1,9 +1,6 @@
 package com.ecosmart.manager.serviceImpl;
 
-import com.ecosmart.manager.data.Agent;
-import com.ecosmart.manager.data.DisposalRequest;
-import com.ecosmart.manager.data.Location;
-import com.ecosmart.manager.data.RequestStatus;
+import com.ecosmart.manager.data.*;
 import com.ecosmart.manager.dto.DisposalRequestDto;
 import com.ecosmart.manager.repository.AgentRepository;
 import com.ecosmart.manager.repository.BinRepository;
@@ -54,7 +51,8 @@ public class DisposalRequestServiceImpl implements DisposalRequestService {
         agentLocation.setLatitude(latitude);
         agentLocation.setLongitude(longitude);
         allRequests.forEach(request -> {
-            if (calculateDistance(agentLocation, binRepository.findById(request.getBinId()).orElseThrow().getLocation())) {
+            Bin bin = binRepository.findById(request.getBinId()).orElseThrow();
+            if (calculateDistance(agentLocation, bin.getLocation())) {
                 nearRequests.add(entityDtoConverter.convertRequestToDto(request));
             }
         });

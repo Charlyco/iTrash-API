@@ -134,6 +134,6 @@ public class BinServiceImpl implements BinService {
                 createNewBin(request);
             }
         }
-        return false;
+        return true;
     }
 }
